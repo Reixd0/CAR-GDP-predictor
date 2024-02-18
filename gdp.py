@@ -56,26 +56,11 @@ def format_rnn_input(data_scaled, timesteps):
 # **File Uploader:** Allows user to select a CSV file 
 uploaded_file = st.file_uploader("Upload CSV file", type=['csv'])
 
-min_year = 2018
-max_year = 2023
-
-selected_years = st.slider(
-    "Select a year range:",
-    min_value=min_year,
-    max_value=max_year,
-    value=(min_year, max_year)
-)
-
-year1, year2 = selected_years
-
-if not (min_year <= year1 <= year2 <= max_year):
-    st.error("Please enter valid years within the specified range.")
-    year_range_str = f"{year1} - {year2}"
-    # **Conditional Block:** Executes prediction logic if a file is uploaded
+# **Conditional Block:** Executes prediction logic if a file is uploaded
 if uploaded_file is not None:
     # **Data Loading:**
     data = pd.read_csv(uploaded_file)
-    year = data[data['Years'] == year_range_str] # Filter for the relevant year
+    year = data[data['Years'] == '2021-2022'] # Filter for the relevant year
     gdp_data = year['Total GDP Province']
     timesteps = 2
         
