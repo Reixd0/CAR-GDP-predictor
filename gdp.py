@@ -72,48 +72,48 @@ if not (min_year <= year1 <= year2 <= max_year):
     st.error("Please enter valid years within the specified range.")
     year_range_str = f"{year1} - {year2}"
     # **Conditional Block:** Executes prediction logic if a file is uploaded
-    if uploaded_file is not None:
-        # **Data Loading:**
-        data = pd.read_csv(uploaded_file)
-        year = data[data['Years'] == year_range_str] # Filter for the relevant year
-        gdp_data = year['Total GDP Province']
-        timesteps = 2
+if uploaded_file is not None:
+    # **Data Loading:**
+    data = pd.read_csv(uploaded_file)
+    year = data[data['Years'] == year_range_str] # Filter for the relevant year
+    gdp_data = year['Total GDP Province']
+    timesteps = 2
         
-        # **Data Scaling:**
-        gdp_data_scaled = scaler.fit_transform(gdp_data.values.reshape(-1, 1)) 
-        X_test, y_test = format_rnn_input(gdp_data_scaled, timesteps)
+    # **Data Scaling:**
+    gdp_data_scaled = scaler.fit_transform(gdp_data.values.reshape(-1, 1)) 
+    X_test, y_test = format_rnn_input(gdp_data_scaled, timesteps)
         
-        # **Reshaping for RNN:**
-        X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1)) 
-        y_test = np.reshape(y_test, (-1, 1))
+    # **Reshaping for RNN:**
+    X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1)) 
+    y_test = np.reshape(y_test, (-1, 1))
         
-        # **Generating Predictions:**
-        predictions = scaler.inverse_transform(model.predict(X_test))
-        predicitons_actual = scaler.inverse_transform(y_test)
+    # **Generating Predictions:**
+    predictions = scaler.inverse_transform(model.predict(X_test))
+    predicitons_actual = scaler.inverse_transform(y_test)
 
-        # **Predictions Table:**
-        st.header("Predictions Table: ")
-        pred_df = pd.DataFrame({'Predicted': predictions.flatten(), 
+    # **Predictions Table:**
+    st.header("Predictions Table: ")
+    pred_df = pd.DataFrame({'Predicted': predictions.flatten(), 
                             'Actual': predicitons_actual.flatten()})
-        st.table(pred_df) 
+    st.table(pred_df) 
 
-        # **Test Results Header:**
-        st.header("Test Results: ")
+    # **Test Results Header:**
+    st.header("Test Results: ")
         
-        # **Predictions Graph:**
-        st.header("Predictions Graph: ")  
-        pred_df = pd.DataFrame({'Predicted': predictions.flatten(), 
+    # **Predictions Graph:**
+    st.header("Predictions Graph: ")  
+    pred_df = pd.DataFrame({'Predicted': predictions.flatten(), 
                                 'Actual': predicitons_actual.flatten()})
-        st.line_chart(pred_df) 
+    st.line_chart(pred_df) 
         
-        # **Evaluation Metrics:**
-        loss, accuracy = model.evaluate(X_test, y_test)
-        rmse = sqrt(mean_squared_error(predicitons_actual, predictions))
+    # **Evaluation Metrics:**
+    loss, accuracy = model.evaluate(X_test, y_test)
+    rmse = sqrt(mean_squared_error(predicitons_actual, predictions))
 
-        st.header("Evaluation Metrics")
-        st.write(f"Loss: {loss:.4f} or {loss * 100:.2f}%")
-        st.write(f"Accuracy: {accuracy:.4f} or {accuracy * 100:.2f}%")
-        st.write(f"Test RMSE: {rmse:.2f}")
+    st.header("Evaluation Metrics")
+    st.write(f"Loss: {loss:.4f} or {loss * 100:.2f}%")
+    st.write(f"Accuracy: {accuracy:.4f} or {accuracy * 100:.2f}%")
+    st.write(f"Test RMSE: {rmse:.2f}")
         
-    else:
-        st.write("Upload a CSV file to get predictions.")
+else:
+    st.write("Upload a CSV file to get predictions.")
