@@ -8,7 +8,7 @@ from math import sqrt
 from sklearn.preprocessing import MinMaxScaler 
 
 # **Title:** Sets the title of the Streamlit application
-st.title("GDP Prediction Tester hh")
+st.title("CAR GDP Predictor")
 
 # **Caching Functions:** Decorators for efficient model and scaler loading
 @st.cache_resource 
